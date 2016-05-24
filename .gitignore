@@ -51,4 +51,4 @@
 .idea/
 
 # sqlite db
-/app/data/mind-maker.deb3
+/app/data/mind-maker.db3
