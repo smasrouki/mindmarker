@@ -49,3 +49,6 @@
 
 # phpstorm
 .idea/
+
+# sqlite db
+/app/data/mind-maker.deb3
