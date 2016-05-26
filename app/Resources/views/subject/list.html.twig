@@ -1,54 +1,25 @@
-<h4>{{ 'subject.list.title'|trans }}</h4>
-
 <div class="panel panel-default">
     <div class="panel-body">
-        <form class="form-inline">
+        <h4>{{ 'subject.list.title'|trans }}</h4>
+        <form class="form-inline" action="{{ form.vars.action }}" method="{{ form.vars.method }}">
             <div class="form-group">
-                <input type="email" class="form-control" id="exampleInputEmail2" placeholder="{{ 'subject.list.new'|trans }}">
+                {{ form_errors(form.parent) }}
+                {{ form_widget(form.parent, {'attr': {'class':'form-control'}}) }}
+            </div>
+            <div class="form-group">
+                {{ form_errors(form.label) }}
+                {{ form_widget(form.label, {'attr': {'class':'form-control', 'placeholder': 'subject.list.new'|trans }}) }}
             </div>
             <button type="submit" class="btn btn-default">{{ 'subject.list.create'|trans }}</button>
+            {{ form_rest(form) }}
         </form>
     </div>
 </div>
-
-
 
 <div id="tree"></div>
 
 <script type="text/javascript">
     $(document).ready(function(){
-        $('#tree').treeview({data:[
-            {
-                text: "Parent 1",
-                nodes: [
-                    {
-                        text: "Child 1",
-                        nodes: [
-                            {
-                                text: "Grandchild 1"
-                            },
-                            {
-                                text: "Grandchild 2"
-                            }
-                        ]
-                    },
-                    {
-                        text: "Child 2"
-                    }
-                ]
-            },
-            {
-                text: "Parent 2"
-            },
-            {
-                text: "Parent 3"
-            },
-            {
-                text: "Parent 4"
-            },
-            {
-                text: "Parent 5"
-            }
-        ]});
+        $('#tree').treeview({data: {{ subjects|raw }}, enableLinks: true });
     });
 </script>

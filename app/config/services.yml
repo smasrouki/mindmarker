@@ -4,6 +4,6 @@ parameters:
 #    parameter_name: value
 
 services:
-#    service_name:
-#        class: AppBundle\Directory\ClassName
-#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+    subject_manager:
+        class: AppBundle\Manager\SubjectManager
+        arguments: ["@doctrine.orm.entity_manager", "@router"]

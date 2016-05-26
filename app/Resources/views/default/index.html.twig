@@ -4,7 +4,7 @@
         <div class="row">
             <div class="col-md-3">
                 <div class="row">
-                    <div class="col-md-12">{{ render(controller('AppBundle:Subject:list')) }}</div>
+                    <div class="col-md-12">{{ render(controller('AppBundle:Subject:list', {'subject': subject})) }}</div>
                 </div>
                 <div class="row">
                     <div class="col-md-12">TODO list</div>
