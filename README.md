@@ -27,7 +27,7 @@ Functionnal and technical features
   * [**LobiList**][5] - Jquery - Todo lists
     sending emails
 
-  * [**Tree in Table**][6] - Jquery - Tree list
+  * [**Fancytree**][6] - Jquery / Bootstrap - Tree list
 
 
 [1]:  https://github.com/stof/StofDoctrineExtensionsBundle
@@ -35,5 +35,5 @@ Functionnal and technical features
 [3]:  http://docutils.sourceforge.net/rst.html
 [4]:  http://www.jqueryrain.com/?E0hIQvrC
 [5]:  http://www.jqueryrain.com/?e0eXeQtT
-[6]:  http://www.jqueryrain.com/?kcpml9yd
+[6]:  https://github.com/mar10/fancytree/wiki
 

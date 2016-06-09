@@ -20,3 +20,16 @@
     max-width: 680px;
     padding: 0 15px;
 }
+
+.note-list{
+    min-height: 50px;
+}
+
+.sidebar-element{
+    margin-right: 6px;
+}
+
+#tree{
+    padding: 0 6px;
+    margin-bottom: 20px;
+}

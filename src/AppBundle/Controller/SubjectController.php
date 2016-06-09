@@ -137,4 +137,10 @@ class SubjectController extends Controller
             ->getForm()
         ;
     }
+
+    public function listAction(Subject $subject)
+    {
+        return $this->render('subject/list.html.twig');
+
+    }
 }
