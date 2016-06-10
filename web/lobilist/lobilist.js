@@ -609,10 +609,10 @@ $(function () {
         },
 
         _onRemoveListClick: function () {
-			var me = this;
-            me._triggerEvent('beforeListRemove', [me]);
+			var me = $(this).parent().parent().parent().parent();
+            //me._triggerEvent('beforeListRemove', [me]);
             me.remove();
-            me._triggerEvent('afterListRemove', [me]);
+            //me._triggerEvent('afterListRemove', [me]);
             return me;
         },
 

@@ -46,8 +46,10 @@
     <script src="{{ asset('jquery-ui/jquery-ui.min.js') }}"></script>
     <script src="{{ asset('bootstrap/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('lobipanel/js/lobipanel.min.js') }}"></script>
-    <script src="{{ asset('lobilist/lobilist.min.js') }}"></script>
+    <script src="{{ asset('lobilist/lobilist.js') }}"></script>
     <script src="{{ asset('fancytree/jquery.fancytree-all.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>
 {% endblock %}
 </body>

@@ -1,3 +1,5 @@
+var lobilist = null;
+
 $(document).ready(function(){
     $('.panel').lobiPanel({
         sortable: true
@@ -5,51 +7,36 @@ $(document).ready(function(){
 
     $('#todo-lists').lobiList({
         onSingleLine: false,
-        lists: [
-            {
-                title: 'TODO',
-                defaultStyle: 'lobilist-info',
-                items: [
-                    {
-                        title: 'Floor cool cinders',
-                        description: 'Thunder fulfilled travellers folly, wading, lake.',
-                        dueDate: '2015-01-31'
-                    },
-                    {
-                        title: 'Periods pride',
-                        description: 'Accepted was mollis',
-                        done: true
-                    },
-                    {
-                        title: 'Flags better burns pigeon',
-                        description: 'Rowed cloven frolic thereby, vivamus pining gown intruding strangers prank treacherously darkling.'
-                    },
-                    {
-                        title: 'Accepted was mollis',
-                        description: 'Rowed cloven frolic thereby, vivamus pining gown intruding strangers prank treacherously darkling.',
-                        dueDate: '2015-02-02'
-                    }
-                ]
-            },
-            {
-                title: 'DOING',
-                items: [
-                    {
-                        title: 'Composed trays',
-                        description: 'Hoary rattle exulting suspendisse elit paradises craft wistful. Bayonets allures prefer traits wrongs flushed. Tent wily matched bold polite slab coinage celerities gales beams.'
-                    },
-                    {
-                        title: 'Chic leafy'
-                    },
-                    {
-                        title: 'Guessed interdum armies chirp writhes most',
-                        description: 'Came champlain live leopards twilight whenever warm read wish squirrel rock.',
-                        dueDate: '2015-02-04',
-                        done: true
-                    }
-                ]
+        controls: ['edit','remove'],
+        titleChange: function($list) {
+            $title = $list.$title.html();
+            if($list.$options.id == 'new') {
+                $.ajax({
+                    url: Routing.generate('tasklist_new', {'title': $title}),
+                }).done(function($id) {
+                    $list.$options.id = $id;
+                });
+            } else {
+                $.ajax({
+                    url: Routing.generate('tasklist_edit', {'id': $list.$options.id, 'title': $title}),
+                }).done(function($id) {
+                    console.log('ok');
+                });
             }
-        ]
+
+        }
+    });
+
+    lobilist = $('#todo-lists').data('lobiList');
+
+    $('#add-tasklist').click(function(){
+        lobilist.addList({
+            title: '...',
+            defaultStyle: 'lobilist-default',
+            useCheckboxes: false,
+            item: [],
+            id: 'new'
+        });
     });
 
     var glyph_opts = {

@@ -86,6 +86,11 @@ class Subject
     private $createdBy;
 
     /**
+     * @ORM\OneToMany(targetEntity="TaskList", mappedBy="subject")
+     */
+    private $taskLists;
+
+    /**
      * Get id
      *
      * @return integer
@@ -317,5 +322,38 @@ class Subject
     public function getCreatedBy()
     {
         return $this->createdBy;
+    }
+
+    /**
+     * Add taskLists
+     *
+     * @param \AppBundle\Entity\TaskList $taskLists
+     * @return Subject
+     */
+    public function addTaskList(\AppBundle\Entity\TaskList $taskLists)
+    {
+        $this->taskLists[] = $taskLists;
+
+        return $this;
+    }
+
+    /**
+     * Remove taskLists
+     *
+     * @param \AppBundle\Entity\TaskList $taskLists
+     */
+    public function removeTaskList(\AppBundle\Entity\TaskList $taskLists)
+    {
+        $this->taskLists->removeElement($taskLists);
+    }
+
+    /**
+     * Get taskLists
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTaskLists()
+    {
+        return $this->taskLists;
     }
 }

@@ -19,9 +19,4 @@ class DefaultController extends Controller
             'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..'),
         ));
     }
-
-    public function listAction(Subject $subject)
-    {
-        return $this->render('default/list.html.twig');
-    }
 }

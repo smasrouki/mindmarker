@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>TaskList list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Color</th>
+                <th>Number</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for taskList in taskLists %}
+            <tr>
+                <td><a href="{{ path('tasklist_show', { 'id': taskList.id }) }}">{{ taskList.id }}</a></td>
+                <td>{{ taskList.title }}</td>
+                <td>{{ taskList.color }}</td>
+                <td>{{ taskList.number }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('tasklist_show', { 'id': taskList.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('tasklist_edit', { 'id': taskList.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('tasklist_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}
