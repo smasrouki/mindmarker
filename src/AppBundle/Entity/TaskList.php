@@ -47,6 +47,11 @@ class TaskList
      */
     private $number = 1;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Task", mappedBy="taskList")
+     */
+    private $tasks;
+
 
     /**
      * Get id
@@ -148,5 +153,50 @@ class TaskList
     public function getSubject()
     {
         return $this->subject;
+    }
+
+    public function __toString()
+    {
+        return $this->getTitle();
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->tasks = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add tasks
+     *
+     * @param \AppBundle\Entity\Task $tasks
+     * @return TaskList
+     */
+    public function addTask(\AppBundle\Entity\Task $tasks)
+    {
+        $this->tasks[] = $tasks;
+
+        return $this;
+    }
+
+    /**
+     * Remove tasks
+     *
+     * @param \AppBundle\Entity\Task $tasks
+     */
+    public function removeTask(\AppBundle\Entity\Task $tasks)
+    {
+        $this->tasks->removeElement($tasks);
+    }
+
+    /**
+     * Get tasks
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTasks()
+    {
+        return $this->tasks;
     }
 }

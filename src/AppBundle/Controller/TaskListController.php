@@ -91,19 +91,13 @@ class TaskListController extends Controller
     /**
      * Deletes a TaskList entity.
      *
-     * @Route("/{id}", name="tasklist_delete")
-     * @Method("DELETE")
+     * @Route("/delete/{id}", name="tasklist_delete")
      */
-    public function deleteAction(Request $request, TaskList $taskList)
+    public function deleteAction(TaskList $taskList)
     {
-        $form = $this->createDeleteForm($taskList);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($taskList);
-            $em->flush();
-        }
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($taskList);
+        $em->flush();
 
         return $this->redirectToRoute('tasklist_index');
     }
@@ -126,8 +120,33 @@ class TaskListController extends Controller
 
     public function listAction(Subject $subject)
     {
+        // TODO link to subject
+        $taskLists = array();
+
+        $lists = $this->getDoctrine()->getRepository('AppBundle:TaskList')->findAll();
+
+        foreach($lists as $taskList) {
+            $items = array();
+
+            foreach($taskList->getTasks() as $task) {
+                $items[] = array(
+                    'title' => $task->getTitle(),
+                    'description' => $task->getDescription(),
+                    'dueDate' => $task->getDueDate(),
+                    'done' => $task->getDone(),
+                    'id' => $task->getId(),
+                );
+            }
+
+            $taskLists[] = array(
+                'id' => $taskList->getId(),
+                'title' => $taskList->getTitle(),
+                'items' => $items,
+            );
+        }
+
         return $this->render('tasklist/list.html.twig', array(
-            'subject' => $subject,
+            'taskLists' => json_encode($taskLists),
         ));
     }
 }

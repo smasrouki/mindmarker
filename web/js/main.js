@@ -8,6 +8,7 @@ $(document).ready(function(){
     $('#todo-lists').lobiList({
         onSingleLine: false,
         controls: ['edit','remove'],
+        lists: taskLists,
         titleChange: function($list) {
             $title = $list.$title.html();
             if($list.$options.id == 'new') {
@@ -24,6 +25,27 @@ $(document).ready(function(){
                 });
             }
 
+        },
+        afterItemAdd: function ($list, $object) {
+            $.ajax({
+                url: Routing.generate('task_new', {'task[title]': $object.title, 'task[taskList]': $list.$options.id, 'task[dueDate]': $object.dueDate, 'task[description]': $object.description}),
+            }).done(function($id) {
+                console.log($id);
+            });
+        },
+        afterItemUpdate: function ($list, $object) {
+            $.ajax({
+                url: Routing.generate('task_edit', {'id': $object.id, 'task[title]': $object.title, 'task[taskList]': $list.$options.id, 'task[dueDate]': $object.dueDate, 'task[description]': $object.description}),
+            }).done(function($id) {
+                console.log($id);
+            });
+        },
+        afterItemDelete: function ($list, $object) {
+            $.ajax({
+                url: Routing.generate('task_delete', {'id': $object.id}),
+            }).done(function($id) {
+                console.log($id);
+            });
         }
     });
 
