@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Entity\Task;
 use AppBundle\Form\TaskType;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Task controller.
@@ -130,5 +131,35 @@ class TaskController extends Controller
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+
+    /**
+     * Mark Task as done
+     *
+     * @Route("/do/{id}", name="task_do", options = { "expose" = true })
+     */
+    public function doAction(Task $task)
+    {
+        $task->setDone(true);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->flush();
+
+        return new Response($task->getTaskList()->getStatus() ? 'done' : '');
+    }
+
+    /**
+     * Mark Task as undone
+     *
+     * @Route("/undo/{id}", name="task_undo", options = { "expose" = true })
+     */
+    public function undoAction(Task $task)
+    {
+        $task->setDone(false);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->flush();
+
+        return new Response($task->getTaskList()->getStatus() ? 'done' : '');
     }
 }

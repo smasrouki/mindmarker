@@ -199,4 +199,15 @@ class TaskList
     {
         return $this->tasks;
     }
+
+    public function getStatus()
+    {
+        foreach($this->getTasks() as $task) {
+            if($task->getDone() == false) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

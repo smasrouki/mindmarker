@@ -46,6 +46,24 @@ $(document).ready(function(){
             }).done(function($id) {
                 console.log($id);
             });
+        },
+        afterMarkAsDone: function ($list, $object) {
+            $id = $object.parent().parent().attr('data-id');
+
+            $.ajax({
+                url: Routing.generate('task_do', {'id': $id}),
+            }).done(function($status) {
+                console.log($status);
+            });
+        },
+        afterMarkAsUndone: function ($list, $object) {
+            $id = $object.parent().parent().attr('data-id');
+
+            $.ajax({
+                url: Routing.generate('task_undo', {'id': $id}),
+            }).done(function($status) {
+                console.log($status);
+            });
         }
     });
 
