@@ -11,6 +11,7 @@
                 <th>Description</th>
                 <th>Duedate</th>
                 <th>Done</th>
+                <th>Order</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -22,6 +23,7 @@
                 <td>{{ task.description }}</td>
                 <td>{{ task.dueDate }}</td>
                 <td>{% if task.done %}Yes{% else %}No{% endif %}</td>
+                <td>{{ task.number }}</td>
                 <td>
                     <ul>
                         <li>

@@ -162,4 +162,36 @@ class TaskController extends Controller
 
         return new Response($task->getTaskList()->getStatus() ? 'done' : '');
     }
+
+    /**
+     * Move task to a new position and reoder the list
+     *
+     * @Route("/move/{id}/{taskListId}/{newPosition}", name="task_move", options = { "expose" = true })
+     */
+    public function moveAction($taskListId, Task $movedTask, $newPosition)
+    {
+        $oldPosition = $movedTask->getNumber();
+
+        $taskList = $movedTask->getTaskList();
+
+        if($movedTask->getNumber() > $newPosition){
+            foreach ($taskList->getTasks() as $task) {
+                if($task->getNumber() >= $newPosition and $task->getNumber() < $oldPosition) {
+                    $task->setNumber($task->getNumber() + 1);
+                }
+            }
+        } else {
+            foreach ($taskList->getTasks() as $task) {
+                if($task->getNumber() <= $newPosition and $task->getNumber() > $oldPosition) {
+                    $task->setNumber($task->getNumber() - 1);
+                }
+            }
+        }
+
+        $movedTask->setNumber($newPosition);
+
+        $this->getDoctrine()->getManager()->flush();
+
+        return new Response('ok');
+    }
 }

@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="task")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TaskRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Task
 {
@@ -48,6 +49,13 @@ class Task
      * @ORM\Column(name="done", type="boolean")
      */
     private $done = false;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="number", type="integer")
+     */
+    private $number;
 
     /**
      * @ORM\ManyToOne(targetEntity="TaskList", inversedBy="tasks")
@@ -178,5 +186,44 @@ class Task
     public function getTaskList()
     {
         return $this->taskList;
+    }
+
+    /**
+     * Set number
+     *
+     * @param integer $number
+     * @return Task
+     */
+    public function setNumber($number)
+    {
+        $this->number = $number;
+
+        return $this;
+    }
+
+    /**
+     * Get number
+     *
+     * @return integer 
+     */
+    public function getNumber()
+    {
+        return $this->number;
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function setupNumber()
+    {
+        $maxNumber = 0;
+
+        foreach($this->getTaskList()->getTasks() as $task) {
+            if($task->getNumber() > $maxNumber) {
+                $maxNumber = $task->getNumber();
+            }
+        }
+
+        $this->setNumber($maxNumber+1);
     }
 }

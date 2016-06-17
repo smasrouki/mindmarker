@@ -64,6 +64,16 @@ $(document).ready(function(){
             }).done(function($status) {
                 console.log($status);
             });
+        },
+        afterItemReorder: function ($list, $object) {
+            $newPosition = $object.parent().children().index($object) + 1;
+            console.log($object);
+
+            $.ajax({
+                url: Routing.generate('task_move', {'taskListId': $list.$options.id, 'id': $object.attr('data-id'), 'newPosition': $newPosition}),
+            }).done(function($status) {
+                console.log($status);
+            });
         }
     });
 

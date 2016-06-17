@@ -49,6 +49,7 @@ class TaskList
 
     /**
      * @ORM\OneToMany(targetEntity="Task", mappedBy="taskList")
+     * @ORM\OrderBy({"number" = "ASC"})
      */
     private $tasks;
 
