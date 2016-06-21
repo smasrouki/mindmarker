@@ -16,12 +16,7 @@ class SubjectType extends AbstractType
     {
         $builder
             ->add('label')
-            ->add('lft')
-            ->add('lvl')
-            ->add('rgt')
-            ->add('root')
             ->add('parent')
-            ->add('createdBy')
         ;
     }
     

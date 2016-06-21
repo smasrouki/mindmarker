@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Entity\Subject;
 use AppBundle\Form\SubjectType;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Subject controller.
@@ -36,27 +37,20 @@ class SubjectController extends Controller
     /**
      * Creates a new Subject entity.
      *
-     * @Route("/new", name="subject_new")
+     * @Route("/new/{label}", name="subject_new", options = { "expose" = true }, defaults = {"label" = null})
      * @Method({"GET", "POST"})
      */
-    public function newAction(Request $request)
+    public function newAction($label)
     {
         $subject = new Subject();
-        $form = $this->createForm('AppBundle\Form\SubjectType', $subject);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($subject);
-            $em->flush();
+        $subject->setLabel($label);
 
-            return $this->redirectToRoute('subject_show', array('id' => $subject->getId()));
-        }
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($subject);
+        $em->flush();
 
-        return $this->render('subject/new.html.twig', array(
-            'subject' => $subject,
-            'form' => $form->createView(),
-        ));
+        return new Response($subject->getId());
     }
 
     /**
@@ -78,28 +72,17 @@ class SubjectController extends Controller
     /**
      * Displays a form to edit an existing Subject entity.
      *
-     * @Route("/{id}/edit", name="subject_edit")
+     * @Route("/{id}/edit/{label}", name="subject_edit", options = { "expose" = true }, defaults = {"label" = null})
      * @Method({"GET", "POST"})
      */
-    public function editAction(Request $request, Subject $subject)
+    public function editAction(Subject $subject, $label)
     {
-        $deleteForm = $this->createDeleteForm($subject);
-        $editForm = $this->createForm('AppBundle\Form\SubjectType', $subject);
-        $editForm->handleRequest($request);
+        $subject->setLabel($label);
 
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($subject);
-            $em->flush();
+        $em = $this->getDoctrine()->getManager();
+        $em->flush();
 
-            return $this->redirectToRoute('subject_edit', array('id' => $subject->getId()));
-        }
-
-        return $this->render('subject/edit.html.twig', array(
-            'subject' => $subject,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ));
+        return new Response($subject->getId());
     }
 
     /**
@@ -140,7 +123,11 @@ class SubjectController extends Controller
 
     public function listAction(Subject $subject)
     {
-        return $this->render('subject/list.html.twig');
+        $subjects = $this->getDoctrine()->getRepository('AppBundle:Subject')->findAll();
+
+        return $this->render('subject/list.html.twig', array(
+            'subjects' => $subjects,
+        ));
 
     }
 }

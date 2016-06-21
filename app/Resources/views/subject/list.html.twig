@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-md-12">
-        <a class="btn btn-xs btn-default pull-right sidebar-element" href="#">
+        <a id="add-subject" class="btn btn-xs btn-default pull-right sidebar-element" href="#">
             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
         </a>
     </div>
@@ -10,7 +10,9 @@
     <div class="col-md-12">
         <div id="tree">
             <ul id="treeData" style="display: none;">
-                <li id="1">Node 1
+                {% for subject in subjects %}
+                <li id="{{ subject.id }}">{{ subject }}
+                {% endfor %}
                 <li id="2">Folder 2
                     <ul>
                         <li id="3">Node 2.1

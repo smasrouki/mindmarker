@@ -153,23 +153,28 @@ $(document).ready(function(){
                 // Return false to prevent edit mode
             },
             edit: function (event, data) {
+                data.input.select();
+                console.log(data.input.val());
                 // Editor was opened (available as data.input)
             },
             beforeClose: function (event, data) {
                 // Return false to prevent cancel/save (data.input is available)
             },
             save: function (event, data) {
-                // Save data.input.val() or return false to keep editor open
-                console.log("save...", this, data);
-                // Simulate to start a slow ajax request...
-                setTimeout(function () {
-                    $(data.node.span).removeClass("pending");
-                    // Let's pretend the server returned a slightly modified
-                    // title:
-                    data.node.setTitle(data.node.title + "*");
-                }, 2000);
-                // We return true, so ext-edit will set the current user input
-                // as title
+                if (data.node.key == 'new') {
+                    $.ajax({
+                        url: Routing.generate('subject_new', {'label': data.input.val()}),
+                    }).done(function(id) {
+                        data.node.key = id;
+                    });
+                } else {
+                    $.ajax({
+                        url: Routing.generate('subject_edit', {'id': data.node.key, 'label': data.input.val()}),
+                    }).done(function(id) {
+                        console.log('edited');
+                    });
+                }
+
                 return true;
             },
             close: function (event, data) {
@@ -180,5 +185,16 @@ $(document).ready(function(){
                 }
             }
         }
+    });
+
+    $('#add-subject').click(function () {
+        var activeNode = $("#tree").fancytree("getRootNode");
+
+        node = activeNode.addChildren({
+            title: '...',
+            key: 'new'
+        });
+
+        node.editStart();
     });
 });
