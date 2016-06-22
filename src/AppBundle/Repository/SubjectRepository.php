@@ -12,4 +12,19 @@ use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
  */
 class SubjectRepository extends NestedTreeRepository
 {
+    public function getRoot()
+    {
+        // TODO clean roots
+        $roots = $this->getRootNodes();
+        return $roots[0];
+    }
+
+    public function getRootSubjects()
+    {
+        // TODO clean roots
+        $roots = $this->getRootNodes();
+        $root = $roots[0];
+
+        return $root->getChildren();
+    }
 }

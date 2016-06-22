@@ -144,6 +144,14 @@ $(document).ready(function(){
                  *  the tree.
                  */
                 data.otherNode.moveTo(node, data.hitMode);
+
+                console.log(data.hitMode);
+
+                $.ajax({
+                    url: Routing.generate('subject_move', {'id': data.otherNode.key, 'toId': node.key, 'mode': data.hitMode}),
+                }).done(function(status) {
+                    console.log('moved');
+                });
             }
         },
         glyph: glyph_opts,

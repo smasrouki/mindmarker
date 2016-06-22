@@ -7,8 +7,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Entity\Subject;
-use AppBundle\Form\SubjectType;
 use Symfony\Component\HttpFoundation\Response;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 /**
  * Subject controller.
@@ -45,6 +45,7 @@ class SubjectController extends Controller
         $subject = new Subject();
 
         $subject->setLabel($label);
+        $subject->setParent($this->getDoctrine()->getRepository('AppBundle:Subject')->getRoot());
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($subject);
@@ -123,11 +124,36 @@ class SubjectController extends Controller
 
     public function listAction(Subject $subject)
     {
-        $subjects = $this->getDoctrine()->getRepository('AppBundle:Subject')->findAll();
+        $subjects = $this->getDoctrine()->getRepository('AppBundle:Subject')->getRootSubjects();
 
         return $this->render('subject/list.html.twig', array(
             'subjects' => $subjects,
         ));
 
+    }
+
+    /**
+     * Displays a form to edit an existing Subject entity.
+     *
+     * @Route("/move/{id}/{toId}/{mode}", name="subject_move", options = { "expose" = true }, defaults = {"label" = null})
+     * @ParamConverter("target", class="AppBundle:Subject", options={"id" = "toId"})
+     */
+    public function moveAction(Subject $source, Subject $target, $mode)
+    {
+        if($mode == 'over') {
+            $source->setParent($target);
+        }
+
+        if($mode == 'after') {
+            $this->getDoctrine()->getRepository('AppBundle:Subject')->persistAsNextSiblingOf($source, $target);
+        }
+
+        if($mode == 'before') {
+            $this->getDoctrine()->getRepository('AppBundle:Subject')->persistAsPrevSiblingOf($source, $target);
+        }
+
+        $this->getDoctrine()->getManager()->flush();
+
+        return new Response('ok');
     }
 }

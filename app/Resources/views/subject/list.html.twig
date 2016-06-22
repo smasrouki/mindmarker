@@ -1,3 +1,13 @@
+{% macro tree(nodes) %}
+    {% for node in nodes %}
+        <li id="{{ node.id }}">{{ node }}
+            <ul>
+            {{ _self.tree(node.children) }}
+            </ul>
+        </li>
+    {% endfor %}
+{% endmacro %}
+
 <div class="row">
     <div class="col-md-12">
         <a id="add-subject" class="btn btn-xs btn-default pull-right sidebar-element" href="#">
@@ -10,14 +20,7 @@
     <div class="col-md-12">
         <div id="tree">
             <ul id="treeData" style="display: none;">
-                {% for subject in subjects %}
-                <li id="{{ subject.id }}">{{ subject }}
-                {% endfor %}
-                <li id="2">Folder 2
-                    <ul>
-                        <li id="3">Node 2.1
-                        <li id="4">Node 2.2
-                    </ul>
+                {{ _self.tree(subjects) }}
             </ul>
         </div>
     </div>
