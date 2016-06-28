@@ -1,10 +1,66 @@
 var lobilist = null;
 
 $(document).ready(function(){
-    $('.panel').lobiPanel({
+    // Lobipanel
+    $('.panel:not(.prototype)').lobiPanel({
         sortable: true
     });
 
+    // Edit title
+    $('.panel').on('onSaveTitle.lobiPanel', function(ev, lobiPanel){
+        var id =$(lobiPanel.$el[0]).attr('id');
+        var title = $(lobiPanel.$el[0]).find('.panel-title').text();
+
+        $.ajax({
+            url: Routing.generate('content_edit', {'id': id, 'content[title]': title}),
+        }).done(function($id) {
+            console.log('edited');
+        });
+    });
+
+    // Close - SOFT DELETE
+    $('.panel').on('beforeClose.lobiPanel', function(ev, lobiPanel){
+        var id =$(lobiPanel.$el[0]).attr('id');
+
+        $.ajax({
+            url: Routing.generate('content_delete', {'id': id}),
+        }).done(function($status) {
+            console.log($status);
+        });
+    });
+
+    // Add
+    $('#add-content').click(function(){
+        prototype = $('.prototype').clone();
+        prototype.removeClass('prototype');
+        prototype.addClass('new');
+
+        $('#first-block').prepend(prototype);
+
+        $('#first-block .new').show();
+
+        $('#first-block .new').lobiPanel({
+            sortable: true
+        });
+
+        // Save content
+        $('#first-block .new').on('onSaveTitle.lobiPanel', function(ev, lobiPanel){
+            //find title
+            var title = $(lobiPanel.$el[0]).find('.panel-title').text();
+
+            $.ajax({
+                url: Routing.generate('content_new', {'content[title]': title}),
+            }).done(function($id) {
+                $(lobiPanel.$el[0]).removeClass('new');
+                $(lobiPanel.$el[0]).attr('id', $id);
+                console.log($id);
+            });
+        });
+
+        $('#first-block .new').lobiPanel('startTitleEditing');
+    });
+
+    // Lobilist
     $('#todo-lists').lobiList({
         onSingleLine: false,
         controls: ['edit','remove'],
@@ -108,6 +164,7 @@ $(document).ready(function(){
         }
     };
 
+    // Fancytree
     $("#tree").fancytree({
         extensions: ["dnd", "glyph", "edit"],
         dnd: {

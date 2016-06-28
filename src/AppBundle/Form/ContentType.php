@@ -19,6 +19,7 @@ class ContentType extends AbstractType
             ->add('value')
             ->add('subject')
             ->add('createdBy')
+            ->setMethod('GET')
         ;
     }
     
@@ -28,7 +29,8 @@ class ContentType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Content'
+            'data_class' => 'AppBundle\Entity\Content',
+            'csrf_protection' => false,
         ));
     }
 }

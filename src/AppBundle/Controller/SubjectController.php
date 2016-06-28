@@ -64,8 +64,15 @@ class SubjectController extends Controller
     {
         $deleteForm = $this->createDeleteForm($subject);
 
+        // To use for archive
+        //$this->getDoctrine()->getManager()->getFilters()->disable('softdeleteable');
+
+        // TODO get content from subject
+        $contents = $this->getDoctrine()->getRepository('AppBundle:Content')->findAll();
+
         return $this->render('subject/show.html.twig', array(
             'subject' => $subject,
+            'contents' => $contents,
             'delete_form' => $deleteForm->createView(),
         ));
     }

@@ -10,6 +10,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *
  * @ORM\Table(name="content")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ContentRepository")
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
 class Content
 {
@@ -32,7 +33,7 @@ class Content
     /**
      * @var string
      *
-     * @ORM\Column(name="value", type="text")
+     * @ORM\Column(name="value", type="text", nullable=true)
      */
     private $value;
 
@@ -49,6 +50,11 @@ class Content
      * @ORM\JoinColumn(referencedColumnName="id")
      */
     private $createdBy;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $deletedAt;
 
     /**
      * Get id
@@ -150,5 +156,28 @@ class Content
     public function getCreatedBy()
     {
         return $this->createdBy;
+    }
+
+    /**
+     * Set deletedAt
+     *
+     * @param \DateTime $deletedAt
+     * @return Content
+     */
+    public function setDeletedAt($deletedAt)
+    {
+        $this->deletedAt = $deletedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get deletedAt
+     *
+     * @return \DateTime 
+     */
+    public function getDeletedAt()
+    {
+        return $this->deletedAt;
     }
 }

@@ -1414,6 +1414,7 @@ $(function(){
             $heading.find('.panel-title').html(input.val());
             input.remove();
             _changeClassOfControl($heading.find('[data-func="editTitle"]'));
+            _triggerEvent('onSaveTitle');
             return me;
         };
         /**

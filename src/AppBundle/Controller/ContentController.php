@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -36,7 +37,7 @@ class ContentController extends Controller
     /**
      * Creates a new Content entity.
      *
-     * @Route("/new", name="content_new")
+     * @Route("/new", name="content_new", options = { "expose" = true })
      * @Method({"GET", "POST"})
      */
     public function newAction(Request $request)
@@ -50,7 +51,7 @@ class ContentController extends Controller
             $em->persist($content);
             $em->flush();
 
-            return $this->redirectToRoute('content_show', array('id' => $content->getId()));
+            return new Response($content->getId());
         }
 
         return $this->render('content/new.html.twig', array(
@@ -78,7 +79,7 @@ class ContentController extends Controller
     /**
      * Displays a form to edit an existing Content entity.
      *
-     * @Route("/{id}/edit", name="content_edit")
+     * @Route("/{id}/edit", name="content_edit", options = { "expose" = true })
      * @Method({"GET", "POST"})
      */
     public function editAction(Request $request, Content $content)
@@ -105,19 +106,13 @@ class ContentController extends Controller
     /**
      * Deletes a Content entity.
      *
-     * @Route("/{id}", name="content_delete")
-     * @Method("DELETE")
+     * @Route("delete/{id}", name="content_delete", options = { "expose" = true })
      */
     public function deleteAction(Request $request, Content $content)
     {
-        $form = $this->createDeleteForm($content);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($content);
-            $em->flush();
-        }
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($content);
+        $em->flush();
 
         return $this->redirectToRoute('content_index');
     }
