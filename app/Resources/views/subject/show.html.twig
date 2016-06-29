@@ -24,7 +24,7 @@
                 </div>
             </div>
             {% for content in contents %}
-                <div id="{{ content.id }}" class="panel panel-primary">
+                <div id="{{ content.id }}" class="panel panel-primary" data-state="{{ content.collapsed ? 'collapsed' : 'pinnded' }}">
                     <div class="panel-heading">
                         <div class="panel-title">
                             <h4>{{ content.title }}</h4>

@@ -104,6 +104,34 @@ class ContentController extends Controller
     }
 
     /**
+     * Collapse a Content panel.
+     *
+     * @Route("collapse/{id}", name="content_collapse", options = { "expose" = true })
+     */
+    public function collapseAction(Content $content)
+    {
+        $content->setCollapsed(true);
+
+        $this->getDoctrine()->getManager()->flush();
+
+        return $this->redirectToRoute('content_index');
+    }
+
+    /**
+     * open a Content panel.
+     *
+     * @Route("open/{id}", name="content_open", options = { "expose" = true })
+     */
+    public function openAction(Content $content)
+    {
+        $content->setCollapsed(false);
+
+        $this->getDoctrine()->getManager()->flush();
+
+        return $this->redirectToRoute('content_index');
+    }
+
+    /**
      * Deletes a Content entity.
      *
      * @Route("delete/{id}", name="content_delete", options = { "expose" = true })

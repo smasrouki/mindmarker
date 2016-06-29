@@ -38,6 +38,13 @@ class Content
     private $value;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="collapsed", type="boolean")
+     */
+    private $collapsed = false;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Subject")
      */
     private $subject;
@@ -179,5 +186,28 @@ class Content
     public function getDeletedAt()
     {
         return $this->deletedAt;
+    }
+
+    /**
+     * Set collapsed
+     *
+     * @param boolean $collapsed
+     * @return Content
+     */
+    public function setCollapsed($collapsed)
+    {
+        $this->collapsed = $collapsed;
+
+        return $this;
+    }
+
+    /**
+     * Get collapsed
+     *
+     * @return boolean 
+     */
+    public function isCollapsed()
+    {
+        return $this->collapsed;
     }
 }

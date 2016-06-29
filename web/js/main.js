@@ -3,7 +3,8 @@ var lobilist = null;
 $(document).ready(function(){
     // Lobipanel
     $('.panel:not(.prototype)').lobiPanel({
-        sortable: true
+        sortable: true,
+        reload: false
     });
 
     // Edit title
@@ -29,6 +30,34 @@ $(document).ready(function(){
         });
     });
 
+    // Collapse
+    $('.panel').on('beforeMinimize.lobiPanel', function(ev, lobiPanel){
+        var id =$(lobiPanel.$el[0]).attr('id');
+
+        $.ajax({
+            url: Routing.generate('content_collapse', {'id': id}),
+        }).done(function($status) {
+            console.log($status);
+        });
+    });
+
+    // Open
+    $('.panel').on('beforeMaximize.lobiPanel', function(ev, lobiPanel){
+        var id =$(lobiPanel.$el[0]).attr('id');
+
+        $.ajax({
+            url: Routing.generate('content_open', {'id': id}),
+        }).done(function($status) {
+            console.log($status);
+        });
+    });
+
+    // Unpin
+    $('.panel').on('onUnpin.lobiPanel', function(ev, lobiPanel){
+        lobiPanel.setSize(360, 500)
+            .setPosition(15, 255);
+    });
+
     // Add
     $('#add-content').click(function(){
         prototype = $('.prototype').clone();
@@ -40,7 +69,8 @@ $(document).ready(function(){
         $('#first-block .new').show();
 
         $('#first-block .new').lobiPanel({
-            sortable: true
+            sortable: true,
+            reload: false
         });
 
         // Save content
