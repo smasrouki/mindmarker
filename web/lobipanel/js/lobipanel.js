@@ -492,7 +492,7 @@ $(function(){
             }else{
                 me.$el.removeClass('lobipanel-sortable');
             }
-            parent.sortable({
+            $('.node-list').sortable({
                 connectWith: '.lobipanel-parent-sortable',
                 items: '.lobipanel-sortable',
                 handle: '.panel-heading',

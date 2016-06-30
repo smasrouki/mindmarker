@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -63,7 +64,7 @@ class ContentController extends Controller
     /**
      * Finds and displays a Content entity.
      *
-     * @Route("/{id}", name="content_show")
+     * @Route("/show/{id}", name="content_show")
      * @Method("GET")
      */
     public function showAction(Content $content)
@@ -106,7 +107,7 @@ class ContentController extends Controller
     /**
      * Collapse a Content panel.
      *
-     * @Route("collapse/{id}", name="content_collapse", options = { "expose" = true })
+     * @Route("/collapse/{id}", name="content_collapse", options = { "expose" = true })
      */
     public function collapseAction(Content $content)
     {
@@ -120,7 +121,7 @@ class ContentController extends Controller
     /**
      * open a Content panel.
      *
-     * @Route("open/{id}", name="content_open", options = { "expose" = true })
+     * @Route("/open/{id}", name="content_open", options = { "expose" = true })
      */
     public function openAction(Content $content)
     {
@@ -132,9 +133,38 @@ class ContentController extends Controller
     }
 
     /**
+     * open a Content panel.
+     *
+     * @Route("/reorder", name="content_reorder", options = { "expose" = true })
+     */
+    public function reorderAction(Request $request)
+    {
+        foreach (array('1' => 'firstBlock', '2' => 'leftBlock', '3' => 'rightBlock') as $key => $name) {
+            $blockIds = $request->get($name);
+            $order = 1;
+
+            if($blockIds) {
+                foreach($blockIds as $id)
+                {
+                    $content = $this->getDoctrine()->getRepository('AppBundle:Content')->find($id);
+
+                    $content->setBlock($key);
+                    $content->setOrder($order);
+
+                    $order++;
+                }
+            }
+        }
+
+        $this->getDoctrine()->getManager()->flush();
+
+        return new Response('OK');
+    }
+
+    /**
      * Deletes a Content entity.
      *
-     * @Route("delete/{id}", name="content_delete", options = { "expose" = true })
+     * @Route("/delete/{id}", name="content_delete", options = { "expose" = true })
      */
     public function deleteAction(Request $request, Content $content)
     {

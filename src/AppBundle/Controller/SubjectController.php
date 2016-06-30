@@ -68,11 +68,15 @@ class SubjectController extends Controller
         //$this->getDoctrine()->getManager()->getFilters()->disable('softdeleteable');
 
         // TODO get content from subject
-        $contents = $this->getDoctrine()->getRepository('AppBundle:Content')->findAll();
+        $firstBlock = $this->getDoctrine()->getRepository('AppBundle:Content')->findBy(array('block' => 1), array('order' => 'ASC'));
+        $leftBlock = $this->getDoctrine()->getRepository('AppBundle:Content')->findBy(array('block' => 2), array('order' => 'ASC'));
+        $rightBlock = $this->getDoctrine()->getRepository('AppBundle:Content')->findBy(array('block' => 3), array('order' => 'ASC'));
 
         return $this->render('subject/show.html.twig', array(
             'subject' => $subject,
-            'contents' => $contents,
+            'firstBlock' => $firstBlock,
+            'leftBlock' => $leftBlock,
+            'rightBlock' => $rightBlock,
             'delete_form' => $deleteForm->createView(),
         ));
     }

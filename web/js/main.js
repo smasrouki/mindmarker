@@ -2,61 +2,7 @@ var lobilist = null;
 
 $(document).ready(function(){
     // Lobipanel
-    $('.panel:not(.prototype)').lobiPanel({
-        sortable: true,
-        reload: false
-    });
-
-    // Edit title
-    $('.panel').on('onSaveTitle.lobiPanel', function(ev, lobiPanel){
-        var id =$(lobiPanel.$el[0]).attr('id');
-        var title = $(lobiPanel.$el[0]).find('.panel-title').text();
-
-        $.ajax({
-            url: Routing.generate('content_edit', {'id': id, 'content[title]': title}),
-        }).done(function($id) {
-            console.log('edited');
-        });
-    });
-
-    // Close - SOFT DELETE
-    $('.panel').on('beforeClose.lobiPanel', function(ev, lobiPanel){
-        var id =$(lobiPanel.$el[0]).attr('id');
-
-        $.ajax({
-            url: Routing.generate('content_delete', {'id': id}),
-        }).done(function($status) {
-            console.log($status);
-        });
-    });
-
-    // Collapse
-    $('.panel').on('beforeMinimize.lobiPanel', function(ev, lobiPanel){
-        var id =$(lobiPanel.$el[0]).attr('id');
-
-        $.ajax({
-            url: Routing.generate('content_collapse', {'id': id}),
-        }).done(function($status) {
-            console.log($status);
-        });
-    });
-
-    // Open
-    $('.panel').on('beforeMaximize.lobiPanel', function(ev, lobiPanel){
-        var id =$(lobiPanel.$el[0]).attr('id');
-
-        $.ajax({
-            url: Routing.generate('content_open', {'id': id}),
-        }).done(function($status) {
-            console.log($status);
-        });
-    });
-
-    // Unpin
-    $('.panel').on('onUnpin.lobiPanel', function(ev, lobiPanel){
-        lobiPanel.setSize(360, 500)
-            .setPosition(15, 255);
-    });
+    initLobiPanel('.panel');
 
     // Add
     $('#add-content').click(function(){
@@ -83,6 +29,7 @@ $(document).ready(function(){
             }).done(function($id) {
                 $(lobiPanel.$el[0]).removeClass('new');
                 $(lobiPanel.$el[0]).attr('id', $id);
+                initLobiPanel('.panel#'+$id);
                 console.log($id);
             });
         });
@@ -293,3 +240,91 @@ $(document).ready(function(){
         node.editStart();
     });
 });
+
+function initLobiPanel(selector)
+{
+    $(selector+':not(.prototype)').lobiPanel({
+        sortable: true,
+        reload: false
+    });
+
+    // Edit title
+    $(selector).off('onSaveTitle.lobiPanel');
+    $(selector).on('onSaveTitle.lobiPanel', function(ev, lobiPanel){
+        var id =$(lobiPanel.$el[0]).attr('id');
+        var title = $(lobiPanel.$el[0]).find('.panel-title').text();
+
+        $.ajax({
+            url: Routing.generate('content_edit', {'id': id, 'content[title]': title}),
+        }).done(function($id) {
+            console.log('edited');
+        });
+    });
+
+    // Close - SOFT DELETE
+    $(selector).on('beforeClose.lobiPanel', function(ev, lobiPanel){
+        var id =$(lobiPanel.$el[0]).attr('id');
+
+        $.ajax({
+            url: Routing.generate('content_delete', {'id': id}),
+        }).done(function($status) {
+            console.log($status);
+        });
+    });
+
+    // Collapse
+    $(selector).on('beforeMinimize.lobiPanel', function(ev, lobiPanel){
+        var id =$(lobiPanel.$el[0]).attr('id');
+
+        $.ajax({
+            url: Routing.generate('content_collapse', {'id': id}),
+        }).done(function($status) {
+            console.log($status);
+        });
+    });
+
+    // Open
+    $(selector).on('beforeMaximize.lobiPanel', function(ev, lobiPanel){
+        var id =$(lobiPanel.$el[0]).attr('id');
+
+        $.ajax({
+            url: Routing.generate('content_open', {'id': id}),
+        }).done(function($status) {
+            console.log($status);
+        });
+    });
+
+    // Unpin
+    $(selector).on('onUnpin.lobiPanel', function(ev, lobiPanel){
+        lobiPanel.setSize(360, 500)
+            .setPosition(15, 255);
+    });
+
+    // Reorder
+    $(selector).on('dragged.lobiPanel', function(ev, lobiPanel){
+        var firstBlock = new Array();
+
+        $('#first-block .panel:not(.prototype)').each(function(){
+            firstBlock.push($(this).attr('id'));
+        });
+
+        var leftBlock = new Array();
+
+        $('#left-block .panel:not(.prototype)').each(function(){
+            leftBlock.push($(this).attr('id'));
+        });
+
+        var rightBlock = new Array();
+
+        $('#right-block .panel:not(.prototype)').each(function(){
+            rightBlock.push($(this).attr('id'));
+        });
+
+        $.ajax({
+            url: Routing.generate('content_reorder', {'firstBlock': firstBlock, 'leftBlock': leftBlock, 'rightBlock': rightBlock}),
+        }).done(function($status) {
+            console.log($status);
+        });
+    });
+
+}

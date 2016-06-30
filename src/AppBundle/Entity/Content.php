@@ -50,6 +50,20 @@ class Content
     private $subject;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="block", type="integer", nullable=true)
+     */
+    private $block = 1;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="content_order", type="integer", nullable=true)
+     */
+    private $order;
+
+    /**
      * @var User $createdBy
      *
      * @Gedmo\Blameable(on="create")
@@ -209,5 +223,61 @@ class Content
     public function isCollapsed()
     {
         return $this->collapsed;
+    }
+
+    /**
+     * Get collapsed
+     *
+     * @return boolean 
+     */
+    public function getCollapsed()
+    {
+        return $this->collapsed;
+    }
+
+    /**
+     * Set block
+     *
+     * @param $block
+     * @return Content
+     */
+    public function setBlock($block)
+    {
+        $this->block = $block;
+
+        return $this;
+    }
+
+    /**
+     * Get block
+     *
+     * @return \integet 
+     */
+    public function getBlock()
+    {
+        return $this->block;
+    }
+
+    /**
+     * Set order
+     *
+     * @param integer $order
+     * @return Content
+     */
+    public function setOrder($order)
+    {
+        $this->order = $order;
+
+        return $this;
+    }
+
+    /**
+     * Get order
+     *
+     * @return integer 
+     */
+    public function getOrder()
+    {
+        return $this->order;
     }
 }
