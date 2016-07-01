@@ -29,12 +29,38 @@ $(document).ready(function(){
             }).done(function($id) {
                 $(lobiPanel.$el[0]).removeClass('new');
                 $(lobiPanel.$el[0]).attr('id', $id);
+                $(lobiPanel.$el[0]).find('.edit-content').show();
                 initLobiPanel('.panel#'+$id);
                 console.log($id);
             });
         });
 
         $('#first-block .new').lobiPanel('startTitleEditing');
+    });
+
+    // Edit content
+    $('.node-list').on('click', '.edit-content', function(){
+        console.log('Edit content');
+
+        var id = $(this).parent().parent().attr('id');
+        var editButton = $(this);
+        var panelBody = $(this).parent();
+
+        $.ajax({
+            url: Routing.generate('content_edit', {'id': id}),
+        }).done(function(data) {
+            editButton.hide();
+            panelBody.prepend(data);
+
+            //console.log(data);
+        });
+    });
+
+    $('.node-list').on('click', '.cancel-edit-content', function(){
+        $(this).parent().parent().find('.edit-content').show();
+        $(this).parent().remove();
+
+        return false;
     });
 
     // Lobilist

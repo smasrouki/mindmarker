@@ -1,21 +1,6 @@
-{% extends 'base.html.twig' %}
-
-{% block body %}
-    <h1>Content edit</h1>
-
-    {{ form_start(edit_form) }}
-        {{ form_widget(edit_form) }}
-        <input type="submit" value="Edit" />
-    {{ form_end(edit_form) }}
-
-    <ul>
-        <li>
-            <a href="{{ path('content_index') }}">Back to the list</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
-{% endblock %}
+<form name="content" method="get">
+        {{ form_widget(edit_form.value) }}
+        <br>
+        <button type="submit" class="btn btn-xs btn-success">Enregistrer</button>
+        <button class="btn btn-xs btn-default cancel-edit-content">Annuler</button>
+</form>

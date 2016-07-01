@@ -16,7 +16,9 @@ class ContentType extends AbstractType
     {
         $builder
             ->add('title')
-            ->add('value')
+            ->add('value', null, array(
+                'attr' => array('class' => 'form-control'),
+            ))
             ->add('subject')
             ->add('createdBy')
             ->setMethod('GET')
