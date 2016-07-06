@@ -25,7 +25,7 @@ $(document).ready(function(){
             var title = $(lobiPanel.$el[0]).find('.panel-title').text();
 
             $.ajax({
-                url: Routing.generate('content_new', {'content[title]': title}),
+                url: Routing.generate('content_new', {'title': title}),
             }).done(function($id) {
                 $(lobiPanel.$el[0]).removeClass('new');
                 $(lobiPanel.$el[0]).attr('id', $id);
@@ -57,8 +57,8 @@ $(document).ready(function(){
     });
 
     $('body').on('click', '.cancel-edit-content', function(){
-        $(this).parent().parent().find('.content-value').show();
-        $(this).parent().remove();
+        $(this).parent().parent().parent().find('.content-value').show();
+        $(this).parent().parent().remove();
 
         return false;
     });
@@ -67,13 +67,15 @@ $(document).ready(function(){
         ev.preventDefault();
         ev.stopPropagation();
 
-        var form = $(this).parent();
+        var form = $(this).parent().parent();
         var id = form.parent().parent().attr('id');
         $.ajax({
             url: Routing.generate('content_edit', {'id': id}),
             method: "POST",
             data: form.serialize(),
         }).done(function(data) {
+            form.parent().parent().removeClass('panel-default panel-primary panel-warning panel-danger panel-success panel-info')
+            form.parent().parent().addClass(form.find('#content_contentClass').val());
             form.parent().html(data);
 
             //console.log(data);

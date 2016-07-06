@@ -64,6 +64,13 @@ class Content
     private $order;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="content_class", type="string", length=255, nullable=true)
+     */
+    private $contentClass = 'panel-default';
+
+    /**
      * @var User $createdBy
      *
      * @Gedmo\Blameable(on="create")
@@ -279,5 +286,28 @@ class Content
     public function getOrder()
     {
         return $this->order;
+    }
+
+    /**
+     * Set contentClass
+     *
+     * @param string $contentClass
+     * @return Content
+     */
+    public function setContentClass($contentClass)
+    {
+        $this->contentClass = $contentClass;
+
+        return $this;
+    }
+
+    /**
+     * Get contentClass
+     *
+     * @return string 
+     */
+    public function getContentClass()
+    {
+        return $this->contentClass;
     }
 }

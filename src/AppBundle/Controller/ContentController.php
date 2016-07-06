@@ -44,6 +44,16 @@ class ContentController extends Controller
     public function newAction(Request $request)
     {
         $content = new Content();
+
+        if($request->isMethod('get') && $request->get('title')) {
+            $content->setTitle($request->get('title'));
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($content);
+            $em->flush();
+
+            return new Response($content->getId());
+        }
+
         $form = $this->createForm('AppBundle\Form\ContentType', $content);
         $form->handleRequest($request);
 

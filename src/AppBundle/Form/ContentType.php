@@ -18,6 +18,17 @@ class ContentType extends AbstractType
             ->add('value', null, array(
                 'attr' => array('class' => 'form-control', 'rows' => '10'),
             ))
+            ->add('contentClass', 'choice', array(
+                'choices' => array(
+                    'panel-default' => 'Defaut',
+                    'panel-primary' => 'Principal',
+                    'panel-warning' => 'Important',
+                    'panel-danger' => 'Danger',
+                    'panel-success' => 'Succès',
+                    'panel-info' => 'Info',
+                ),
+                'attr' => array('class' => 'form-control input-sm pull-right')
+            ))
         ;
     }
     

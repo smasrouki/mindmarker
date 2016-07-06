@@ -1,7 +1,14 @@
 <form name="content" method="post">
-    {{ form_errors(edit_form.value) }}
-    {{ form_widget(edit_form.value) }}
-    <br>
-    <button class="btn btn-xs btn-success save-content">Enregistrer</button>
-    <button class="btn btn-xs btn-default cancel-edit-content">Annuler</button>
+    <div class="col-md-12">
+        {{ form_errors(edit_form.value) }}
+        {{ form_widget(edit_form.value) }}
+        <br>
+    </div>
+    <div class="col-md-6">
+        <button class="btn btn-xs btn-success save-content">Enregistrer</button>
+        <button class="btn btn-xs btn-default cancel-edit-content">Annuler</button>
+    </div>
+    <div class="col-md-6">
+        {{ form_widget(edit_form.contentClass) }}
+    </div>
 </form>
