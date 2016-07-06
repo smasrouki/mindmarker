@@ -15,13 +15,9 @@ class ContentType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title')
             ->add('value', null, array(
-                'attr' => array('class' => 'form-control'),
+                'attr' => array('class' => 'form-control', 'rows' => '10'),
             ))
-            ->add('subject')
-            ->add('createdBy')
-            ->setMethod('GET')
         ;
     }
     

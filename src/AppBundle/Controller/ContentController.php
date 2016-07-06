@@ -87,14 +87,24 @@ class ContentController extends Controller
     {
         $deleteForm = $this->createDeleteForm($content);
         $editForm = $this->createForm('AppBundle\Form\ContentType', $content);
-        $editForm->handleRequest($request);
 
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager();
+
+        if($request->isMethod('get') && $request->get('title')) {
+            $content->setTitle($request->get('title'));
             $em->persist($content);
             $em->flush();
 
             return $this->redirectToRoute('content_edit', array('id' => $content->getId()));
+        }
+
+        $editForm->handleRequest($request);
+
+        if ($editForm->isSubmitted() && $editForm->isValid()) {
+            $em->persist($content);
+            $em->flush();
+
+            return $this->render('content/_value.html.twig', array('content' => $content));
         }
 
         return $this->render('content/edit.html.twig', array(

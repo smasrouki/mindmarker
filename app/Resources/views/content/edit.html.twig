@@ -1,6 +1,7 @@
-<form name="content" method="get">
-        {{ form_widget(edit_form.value) }}
-        <br>
-        <button type="submit" class="btn btn-xs btn-success">Enregistrer</button>
-        <button class="btn btn-xs btn-default cancel-edit-content">Annuler</button>
+<form name="content" method="post">
+    {{ form_errors(edit_form.value) }}
+    {{ form_widget(edit_form.value) }}
+    <br>
+    <button class="btn btn-xs btn-success save-content">Enregistrer</button>
+    <button class="btn btn-xs btn-default cancel-edit-content">Annuler</button>
 </form>

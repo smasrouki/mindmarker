@@ -39,12 +39,12 @@ $(document).ready(function(){
     });
 
     // Edit content
-    $('.node-list').on('click', '.edit-content', function(){
+    $('body').on('click', '.edit-content', function(){
         console.log('Edit content');
 
-        var id = $(this).parent().parent().attr('id');
-        var editButton = $(this);
-        var panelBody = $(this).parent();
+        var id = $(this).parent().parent().parent().attr('id');
+        var editButton = $(this).parent();
+        var panelBody = $(this).parent().parent();
 
         $.ajax({
             url: Routing.generate('content_edit', {'id': id}),
@@ -56,12 +56,31 @@ $(document).ready(function(){
         });
     });
 
-    $('.node-list').on('click', '.cancel-edit-content', function(){
-        $(this).parent().parent().find('.edit-content').show();
+    $('body').on('click', '.cancel-edit-content', function(){
+        $(this).parent().parent().find('.content-value').show();
         $(this).parent().remove();
 
         return false;
     });
+
+    $('body').on('click', '.save-content', function(ev){
+        ev.preventDefault();
+        ev.stopPropagation();
+
+        var form = $(this).parent();
+        var id = form.parent().parent().attr('id');
+        $.ajax({
+            url: Routing.generate('content_edit', {'id': id}),
+            method: "POST",
+            data: form.serialize(),
+        }).done(function(data) {
+            form.parent().html(data);
+
+            //console.log(data);
+        });
+
+        return false;
+    })
 
     // Lobilist
     $('#todo-lists').lobiList({
@@ -281,7 +300,7 @@ function initLobiPanel(selector)
         var title = $(lobiPanel.$el[0]).find('.panel-title').text();
 
         $.ajax({
-            url: Routing.generate('content_edit', {'id': id, 'content[title]': title}),
+            url: Routing.generate('content_edit', {'id': id, 'title': title}),
         }).done(function($id) {
             console.log('edited');
         });
