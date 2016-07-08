@@ -911,7 +911,13 @@ $(function () {
             }
             if (me._triggerEvent('beforeListAdd', [me, list]) !== false) {
                 me.$lists.push(list);
-                me.$el.append(list.$elWrapper);
+
+                if(list.$options.id == 'new') {
+                    me.$el.prepend(list.$elWrapper);
+                } else {
+                    me.$el.append(list.$elWrapper);
+                }
+
                 list.$el.data('lobiList', list);
                 me._triggerEvent('afterListAdd', [me, list]);
             }

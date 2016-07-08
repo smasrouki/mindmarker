@@ -178,8 +178,9 @@ class TaskController extends Controller
 
         foreach ($ids as $id) {
             $task = $this->getDoctrine()->getRepository('AppBundle:Task')->find($id);
-
+            $task->setTaskList($taskList);
             $task->setNumber($position);
+
             $position++;
         }
 
