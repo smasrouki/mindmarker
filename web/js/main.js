@@ -110,7 +110,8 @@ $(document).ready(function(){
             $.ajax({
                 url: Routing.generate('task_new', {'task[title]': $object.title, 'task[taskList]': $list.$options.id, 'task[dueDate]': $object.dueDate, 'task[description]': $object.description}),
             }).done(function($id) {
-                console.log($id);
+                $list.$body.find('li[data-id="'+$object.id+'"]').attr('data-id', $id);
+                console.log('new task');
             });
         },
         afterItemUpdate: function ($list, $object) {
@@ -145,12 +146,17 @@ $(document).ready(function(){
                 console.log($status);
             });
         },
-        afterItemReorder: function ($list, $object) {
-            $newPosition = $object.parent().children().index($object) + 1;
-            console.log($object);
+        afterItemReorder: function (list, object) {
+            var order = new Array();
+            var listContainer = list.$body.parent();
+            var id = listContainer.attr('id');
+
+            listContainer.find('li').each(function() {
+                order.push($(this).attr('data-id'));
+            });
 
             $.ajax({
-                url: Routing.generate('task_move', {'taskListId': $list.$options.id, 'id': $object.attr('data-id'), 'newPosition': $newPosition}),
+                url: Routing.generate('task_move', {'id': list.$options.id, 'order': order}),
             }).done(function($status) {
                 console.log($status);
             });

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\TaskList;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -51,7 +52,7 @@ class TaskController extends Controller
             $em->persist($task);
             $em->flush();
 
-            return $this->redirectToRoute('task_show', array('id' => $task->getId()));
+            return new Response($task->getId());
         }
 
         return $this->render('task/new.html.twig', array(
@@ -166,29 +167,21 @@ class TaskController extends Controller
     /**
      * Move task to a new position and reoder the list
      *
-     * @Route("/move/{id}/{taskListId}/{newPosition}", name="task_move", options = { "expose" = true })
+     * @Route("/move/{id}/{order}", name="task_move", options = { "expose" = true })
+     *
+     * TODO move to tasklist controller => redorder
      */
-    public function moveAction($taskListId, Task $movedTask, $newPosition)
+    public function moveAction(Request $request, TaskList $taskList)
     {
-        $oldPosition = $movedTask->getNumber();
+        $ids = explode(',', $request->get('order'));
+        $position = 1;
 
-        $taskList = $movedTask->getTaskList();
+        foreach ($ids as $id) {
+            $task = $this->getDoctrine()->getRepository('AppBundle:Task')->find($id);
 
-        if($movedTask->getNumber() > $newPosition){
-            foreach ($taskList->getTasks() as $task) {
-                if($task->getNumber() >= $newPosition and $task->getNumber() < $oldPosition) {
-                    $task->setNumber($task->getNumber() + 1);
-                }
-            }
-        } else {
-            foreach ($taskList->getTasks() as $task) {
-                if($task->getNumber() <= $newPosition and $task->getNumber() > $oldPosition) {
-                    $task->setNumber($task->getNumber() - 1);
-                }
-            }
+            $task->setNumber($position);
+            $position++;
         }
-
-        $movedTask->setNumber($newPosition);
 
         $this->getDoctrine()->getManager()->flush();
 
