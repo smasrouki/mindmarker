@@ -43,9 +43,9 @@ class TaskList
     /**
      * @var int
      *
-     * @ORM\Column(name="number", type="integer")
+     * @ORM\Column(name="number", type="integer", nullable=true)
      */
-    private $number = 1;
+    private $number;
 
     /**
      * @ORM\OneToMany(targetEntity="Task", mappedBy="taskList")

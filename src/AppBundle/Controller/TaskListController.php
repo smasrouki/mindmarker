@@ -103,6 +103,28 @@ class TaskListController extends Controller
     }
 
     /**
+     * Reorder a TaskList entity.
+     *
+     * @Route("/reorder/{order}", name="tasklist_reorder", options = { "expose" = true })
+     */
+    public function reorderAction(Request $request)
+    {
+        $ids = explode(',', $request->get('order'));
+        $position = 1;
+
+        foreach ($ids as $id) {
+            $task = $this->getDoctrine()->getRepository('AppBundle:TaskList')->find($id);
+            $task->setNumber($position);
+
+            $position++;
+        }
+
+        $this->getDoctrine()->getManager()->flush();
+
+        return new Response('ok');
+    }
+
+    /**
      * Creates a form to delete a TaskList entity.
      *
      * @param TaskList $taskList The TaskList entity
@@ -123,7 +145,7 @@ class TaskListController extends Controller
         // TODO link to subject
         $taskLists = array();
 
-        $lists = $this->getDoctrine()->getRepository('AppBundle:TaskList')->findAll();
+        $lists = $this->getDoctrine()->getRepository('AppBundle:TaskList')->findBy(array(), array('number' => 'ASC'));
 
         foreach($lists as $taskList) {
             $items = array();

@@ -96,6 +96,8 @@ $(document).ready(function(){
                     url: Routing.generate('tasklist_new', {'title': $title}),
                 }).done(function($id) {
                     $list.$options.id = $id;
+                    $list.$el.attr('id', $id);
+                    reorderTodoList();
                 });
             } else {
                 $.ajax({
@@ -160,6 +162,9 @@ $(document).ready(function(){
             }).done(function($status) {
                 console.log($status);
             });
+        },
+        afterListReorder: function(lobilist, list) {
+            reorderTodoList();
         }
     });
 
@@ -380,4 +385,19 @@ function initLobiPanel(selector)
         });
     });
 
+}
+
+function reorderTodoList()
+{
+    var order = new Array();
+
+    $('#todo-lists .lobilist').each(function(){
+        order.push($(this).attr('id'));
+    });
+
+    $.ajax({
+        url: Routing.generate('tasklist_reorder', {'order': order}),
+    }).done(function($status) {
+        console.log($status);
+    });
 }
