@@ -48,7 +48,7 @@ class TaskList
     private $number;
 
     /**
-     * @ORM\OneToMany(targetEntity="Task", mappedBy="taskList")
+     * @ORM\OneToMany(targetEntity="Task", mappedBy="taskList", cascade={"remove"})
      * @ORM\OrderBy({"number" = "ASC"})
      */
     private $tasks;

@@ -91,7 +91,7 @@ class TaskListController extends Controller
     /**
      * Deletes a TaskList entity.
      *
-     * @Route("/delete/{id}", name="tasklist_delete")
+     * @Route("/delete/{id}", name="tasklist_delete", options = { "expose" = true })
      */
     public function deleteAction(TaskList $taskList)
     {

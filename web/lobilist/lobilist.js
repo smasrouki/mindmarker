@@ -611,7 +611,18 @@ $(function () {
         _onRemoveListClick: function () {
 			var me = $(this).parent().parent().parent().parent();
             //me._triggerEvent('beforeListRemove', [me]);
+
+            // Fix triggers => move to main.js
+            var id = $(this).parent().parent().parent().attr('id');
+
+            $.ajax({
+                url: Routing.generate('tasklist_delete', {'id': id}),
+            }).done(function($id) {
+                console.log('deleted');
+            });
+
             me.remove();
+
             //me._triggerEvent('afterListRemove', [me]);
             return me;
         },
