@@ -68,9 +68,9 @@ class SubjectController extends Controller
         //$this->getDoctrine()->getManager()->getFilters()->disable('softdeleteable');
 
         // TODO get content from subject
-        $firstBlock = $this->getDoctrine()->getRepository('AppBundle:Content')->findBy(array('block' => 1), array('order' => 'ASC'));
-        $leftBlock = $this->getDoctrine()->getRepository('AppBundle:Content')->findBy(array('block' => 2), array('order' => 'ASC'));
-        $rightBlock = $this->getDoctrine()->getRepository('AppBundle:Content')->findBy(array('block' => 3), array('order' => 'ASC'));
+        $firstBlock = $this->getDoctrine()->getRepository('AppBundle:Content')->findBy(array('subject' => $subject, 'block' => 1), array('order' => 'ASC'));
+        $leftBlock = $this->getDoctrine()->getRepository('AppBundle:Content')->findBy(array('subject' => $subject, 'block' => 2), array('order' => 'ASC'));
+        $rightBlock = $this->getDoctrine()->getRepository('AppBundle:Content')->findBy(array('subject' => $subject, 'block' => 3), array('order' => 'ASC'));
 
         return $this->render('subject/show.html.twig', array(
             'subject' => $subject,
@@ -135,10 +135,21 @@ class SubjectController extends Controller
 
     public function listAction(Subject $subject)
     {
+        $selectedSubjectHierarchy = array();
+
+        $parent = $subject->getParent();
+
+        while($parent) {
+            $selectedSubjectHierarchy[] = $parent->getId();
+            $parent = $parent->getParent();
+        }
+
         $subjects = $this->getDoctrine()->getRepository('AppBundle:Subject')->getRootSubjects();
 
         return $this->render('subject/list.html.twig', array(
             'subjects' => $subjects,
+            'selectedSubjectHierarchy' => $selectedSubjectHierarchy,
+            'selectedSubject' => $subject,
         ));
 
     }

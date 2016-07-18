@@ -1,8 +1,8 @@
-{% macro tree(nodes) %}
+{% macro tree(nodes, selectedSubject, selectedSubjectHierarchy) %}
     {% for node in nodes %}
-        <li id="{{ node.id }}"><a href="{{ path('subject_show', {'id': node.id}) }}">{{ node }}</a>
+        <li class="{{ node.id in selectedSubjectHierarchy ? 'expanded' : '' }} {{ node.id == selectedSubject.id ? 'active focused' : '' }}" id="{{ node.id }}"><a href="{{ path('subject_show', {'id': node.id}) }}">{{ node }}</a>
             <ul>
-            {{ _self.tree(node.children) }}
+            {{ _self.tree(node.children, selectedSubject, selectedSubjectHierarchy) }}
             </ul>
         </li>
     {% endfor %}
@@ -20,7 +20,7 @@
     <div class="col-md-12">
         <div id="tree">
             <ul id="treeData" style="display: none;">
-                {{ _self.tree(subjects) }}
+                {{ _self.tree(subjects, selectedSubject, selectedSubjectHierarchy) }}
             </ul>
         </div>
     </div>

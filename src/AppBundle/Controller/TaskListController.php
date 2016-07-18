@@ -145,7 +145,7 @@ class TaskListController extends Controller
         // TODO link to subject
         $taskLists = array();
 
-        $lists = $this->getDoctrine()->getRepository('AppBundle:TaskList')->findBy(array(), array('number' => 'ASC'));
+        $lists = $this->getDoctrine()->getRepository('AppBundle:TaskList')->findBy(array('subject' => $subject), array('number' => 'ASC'));
 
         foreach($lists as $taskList) {
             $items = array();
