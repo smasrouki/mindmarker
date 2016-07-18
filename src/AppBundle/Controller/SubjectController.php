@@ -57,7 +57,7 @@ class SubjectController extends Controller
     /**
      * Finds and displays a Subject entity.
      *
-     * @Route("/{id}", name="subject_show")
+     * @Route("/{id}", name="subject_show", options = { "expose" = true })
      * @Method("GET")
      */
     public function showAction(Subject $subject)

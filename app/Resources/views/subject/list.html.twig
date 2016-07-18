@@ -1,6 +1,6 @@
 {% macro tree(nodes) %}
     {% for node in nodes %}
-        <li id="{{ node.id }}">{{ node }}
+        <li id="{{ node.id }}"><a href="{{ path('subject_show', {'id': node.id}) }}">{{ node }}</a>
             <ul>
             {{ _self.tree(node.children) }}
             </ul>

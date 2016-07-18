@@ -248,7 +248,7 @@ $(document).ready(function(){
         },
         glyph: glyph_opts,
         edit: {
-            triggerStart: ["f2", "dblclick", "shift+click", "mac+enter"],
+            triggerStart: ["f2", "shift+click", "mac+enter"],
             beforeEdit: function (event, data) {
                 // Return false to prevent edit mode
             },
@@ -265,7 +265,7 @@ $(document).ready(function(){
                     $.ajax({
                         url: Routing.generate('subject_new', {'label': data.input.val()}),
                     }).done(function(id) {
-                        data.node.key = id;
+                        window.open(Routing.generate('subject_show', {'id': id}), '_self');
                     });
                 } else {
                     $.ajax({
@@ -284,6 +284,10 @@ $(document).ready(function(){
                     $(data.node.span).addClass("pending");
                 }
             }
+        },
+        activate: function(event, data) {
+            var node = data.node;
+            window.open(node.data.href, '_self');
         }
     });
 
