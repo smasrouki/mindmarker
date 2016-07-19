@@ -46,7 +46,11 @@ class ContentController extends Controller
         $content = new Content();
 
         if($request->isMethod('get') && $request->get('title')) {
+            $currentSubject = $this->getDoctrine()->getRepository('AppBundle:Subject')->find($request->getSession()->get('subject'));
+
             $content->setTitle($request->get('title'));
+            $content->setSubject($currentSubject);
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($content);
             $em->flush();

@@ -43,11 +43,14 @@ class TaskListController extends Controller
      *
      * TODO remove default title
      */
-    public function newAction($title)
+    public function newAction(Request $request, $title)
     {
+        $currentSubject = $this->getDoctrine()->getRepository('AppBundle:Subject')->find($request->getSession()->get('subject'));
+
         $taskList = new TaskList();
 
         $taskList->setTitle($title);
+        $taskList->setSubject($currentSubject);
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($taskList);
@@ -142,7 +145,6 @@ class TaskListController extends Controller
 
     public function listAction(Subject $subject)
     {
-        // TODO link to subject
         $taskLists = array();
 
         $lists = $this->getDoctrine()->getRepository('AppBundle:TaskList')->findBy(array('subject' => $subject), array('number' => 'ASC'));

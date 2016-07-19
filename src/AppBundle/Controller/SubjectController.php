@@ -60,8 +60,10 @@ class SubjectController extends Controller
      * @Route("/{id}", name="subject_show", options = { "expose" = true })
      * @Method("GET")
      */
-    public function showAction(Subject $subject)
+    public function showAction(Request $request, Subject $subject)
     {
+        $request->getSession()->set('subject', $subject->getId());
+
         $deleteForm = $this->createDeleteForm($subject);
 
         // To use for archive
