@@ -301,6 +301,13 @@ $(document).ready(function(){
 
         node.editStart();
     });
+
+    // Delete subject
+    $('#confirmDelete').on('show.bs.modal', function (e) {
+        $('#confirm-delete').off().on('click', function(){
+            window.open($(e.relatedTarget).attr('data-href'), '_self');
+        });
+    })
 });
 
 function initLobiPanel(selector)

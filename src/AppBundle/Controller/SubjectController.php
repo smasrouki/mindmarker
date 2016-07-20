@@ -134,19 +134,20 @@ class SubjectController extends Controller
     /**
      * Deletes a Subject entity.
      *
-     * @Route("/{id}", name="subject_delete")
-     * @Method("DELETE")
+     * @Route("/delete/{id}", name="subject_delete")
      */
     public function deleteAction(Request $request, Subject $subject)
     {
-        $form = $this->createDeleteForm($subject);
-        $form->handleRequest($request);
+        $em = $this->getDoctrine()->getManager();
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($subject);
-            $em->flush();
+        $children = $this->getDoctrine()->getRepository('AppBundle:Subject')->getChildren($subject);
+
+        foreach ($children as $child) {
+            $em->remove($child);
         }
+
+        $em->remove($subject);
+        $em->flush();
 
         return $this->redirectToRoute('subject_index');
     }

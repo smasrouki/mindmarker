@@ -46,3 +46,7 @@
 #subjects .lobilist-item-description{
     display: none;
 }
+
+#delete-subject{
+    margin-left: 5px;
+}

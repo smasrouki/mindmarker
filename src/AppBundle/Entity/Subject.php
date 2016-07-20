@@ -86,12 +86,12 @@ class Subject
     private $createdBy;
 
     /**
-     * @ORM\OneToMany(targetEntity="TaskList", mappedBy="subject")
+     * @ORM\OneToMany(targetEntity="TaskList", mappedBy="subject", cascade={"remove"})
      */
     private $taskLists;
 
     /**
-     * @ORM\OneToMany(targetEntity="Content", mappedBy="subject")
+     * @ORM\OneToMany(targetEntity="Content", mappedBy="subject", cascade={"remove"})
      */
     private $contents;
 

@@ -4,6 +4,9 @@
     <div class="row">
         <div class="col-md-12">
             <h4 class="pull-left">{{ subject }}</h4>
+            <a id="delete-subject" class="btn btn-xs btn-danger pull-right" data-href="{{ path('subject_delete', {'id': subject.id}) }}" data-toggle="modal" data-target="#confirmDelete">
+                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+            </a>
             <a id="add-content" class="btn btn-xs btn-default pull-right" href="#">
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
             </a>
