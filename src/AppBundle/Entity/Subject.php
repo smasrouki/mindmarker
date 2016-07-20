@@ -91,6 +91,11 @@ class Subject
     private $taskLists;
 
     /**
+     * @ORM\OneToMany(targetEntity="Content", mappedBy="subject")
+     */
+    private $contents;
+
+    /**
      * Get id
      *
      * @return integer
@@ -355,5 +360,38 @@ class Subject
     public function getTaskLists()
     {
         return $this->taskLists;
+    }
+
+    /**
+     * Add contents
+     *
+     * @param \AppBundle\Entity\Content $contents
+     * @return Subject
+     */
+    public function addContent(\AppBundle\Entity\Content $contents)
+    {
+        $this->contents[] = $contents;
+
+        return $this;
+    }
+
+    /**
+     * Remove contents
+     *
+     * @param \AppBundle\Entity\Content $contents
+     */
+    public function removeContent(\AppBundle\Entity\Content $contents)
+    {
+        $this->contents->removeElement($contents);
+    }
+
+    /**
+     * Get contents
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getContents()
+    {
+        return $this->contents;
     }
 }

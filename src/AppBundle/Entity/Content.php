@@ -45,7 +45,7 @@ class Content
     private $collapsed = false;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Subject")
+     * @ORM\ManyToOne(targetEntity="Subject", inversedBy="contents")
      */
     private $subject;
 

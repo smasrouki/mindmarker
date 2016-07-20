@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Entity\TaskList;
 use AppBundle\Form\TaskListType;
 use Symfony\Component\HttpFoundation\Response;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 /**
  * TaskList controller.
@@ -172,5 +173,22 @@ class TaskListController extends Controller
         return $this->render('tasklist/list.html.twig', array(
             'taskLists' => json_encode($taskLists),
         ));
+    }
+
+    /**
+     * Moves Tasklist entity to another subject
+     *
+     * @Route("/{id}/change-subject/{subjectId}", name="tasklist_change_subject", options = { "expose" = true })
+     * @Method({"GET", "POST"})
+     * @ParamConverter("subject", class="AppBundle:Subject", options={"id" = "subjectId"})
+     */
+    public function changeSubjectAction(TaskList $taskList, Subject $subject)
+    {
+        $taskList->setSubject($subject);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->flush();
+
+        return new Response('ok');
     }
 }

@@ -27,4 +27,14 @@ class SubjectRepository extends NestedTreeRepository
 
         return $root->getChildren();
     }
+
+    public function findOrdered()
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.root = 1')
+            ->andWhere('s.lvl > 0')
+            ->orderBy('s.lft')
+            ->getQuery()
+            ->getResult();
+    }
 }

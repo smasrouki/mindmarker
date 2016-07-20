@@ -27,10 +27,42 @@ class SubjectController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $subjects = $em->getRepository('AppBundle:Subject')->findAll();
+        $subjects = $em->getRepository('AppBundle:Subject')->findOrdered();
+
+        $subjectList = array();
+
+        foreach($subjects as $subject) {
+            $items = array();
+
+            foreach($subject->getContents() as $content) {
+                if($content->getDeletedAt() === null) {
+                    $items[] = array(
+                        'title' => $content->getTitle().' <small><span class="label label-primary">C</span></small>',
+                        'id' => $content->getId(),
+                        'description' => 'C',
+                    );
+                }
+            }
+
+            foreach($subject->getTasklists() as $tasklist) {
+                $items[] = array(
+                    'title' => $tasklist->getTitle().' <small><span class="label label-default">T</span></small>',
+                    'id' => $tasklist->getId(),
+                    'description' => 'T',
+                );
+            }
+
+            $subjectList[] = array(
+                'id' => $subject->getId(),
+                'title' => '<a href="'.$this->generateUrl('subject_show', array('id' => $subject->getId())).'">'.$subject->getLabel().'</a>',
+                'items' => $items,
+                'enableTodoRemove' => false,
+                'enableTodoEdit' => false,
+            );
+        }
 
         return $this->render('subject/index.html.twig', array(
-            'subjects' => $subjects,
+            'subjects' => json_encode($subjectList),
         ));
     }
 

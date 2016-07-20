@@ -37,3 +37,12 @@
 .edit-content{
     margin-left: 5px;
 }
+
+#subjects .lobilist-title a{
+    text-decoration: none;
+    color: inherit;
+}
+
+#subjects .lobilist-item-description{
+    display: none;
+}

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Subject;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -10,6 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Entity\Content;
 use AppBundle\Form\ContentType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 /**
  * Content controller.
@@ -213,5 +215,22 @@ class ContentController extends Controller
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+
+    /**
+     * Moves Content entity to another subject
+     *
+     * @Route("/{id}/change-subject/{subjectId}", name="content_change_subject", options = { "expose" = true })
+     * @Method({"GET", "POST"})
+     * @ParamConverter("subject", class="AppBundle:Subject", options={"id" = "subjectId"})
+     */
+    public function changeSubjectAction(Content $content, Subject $subject)
+    {
+        $content->setSubject($subject);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->flush();
+
+        return new Response('ok');
     }
 }
