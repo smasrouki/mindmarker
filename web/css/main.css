@@ -50,3 +50,8 @@
 #delete-subject{
     margin-left: 5px;
 }
+
+.lobilists .lobilist-wrapper,
+.lobilists .lobilist-placeholder {
+    width: 100%;
+}
