@@ -55,3 +55,8 @@
 .lobilists .lobilist-placeholder {
     width: 100%;
 }
+
+#subjects.lobilists .lobilist-wrapper,
+#subjects.lobilists .lobilist-placeholder {
+    width: 23%;
+}

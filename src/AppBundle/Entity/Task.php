@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Task
  *
- * @ORM\Table(name="task")
+ * @ORM\Table(name="mm_task")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TaskRepository")
  * @ORM\HasLifecycleCallbacks()
  */

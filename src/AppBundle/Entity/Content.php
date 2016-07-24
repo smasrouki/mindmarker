@@ -8,7 +8,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * Content
  *
- * @ORM\Table(name="content")
+ * @ORM\Table(name="mm_content")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ContentRepository")
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
